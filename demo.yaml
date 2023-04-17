@@ -10,7 +10,10 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-      # PowerShell script to create a sample text file on Azure VM
-      New-Item -Path 'C:\Sample' -ItemType Directory
-      Set-Content -Path 'C:\Sample\sample.txt' -Value 'This is a sample text file created by Azure 
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: 'New-Item -Path ''C:\Sample'' -ItemType Directory'
   displayName: 'Run a one-line script'
+
+
