@@ -10,6 +10,7 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+      # PowerShell script to create a sample text file on Azure VM
+      New-Item -Path 'C:\Sample' -ItemType Directory
+      Set-Content -Path 'C:\Sample\sample.txt' -Value 'This is a sample text file created by Azure 
+  displayName: 'Run a one-line script'
