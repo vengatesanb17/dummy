@@ -1,0 +1,39 @@
+trigger:
+- main  # Adjust the branch as needed
+
+jobs:
+- job: RunSeleniumTests
+  displayName: 'Run Selenium Tests'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - checkout: self
+
+  # Install Docker Compose
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'docker-compose'
+      version: '1.x'
+      installationPath: $(Agent.ToolsDirectory)/docker-compose
+
+  # Build and start Selenium services
+  - script: |
+      $(Agent.ToolsDirectory)/docker-compose/docker-compose -f docker-compose.yml build
+      $(Agent.ToolsDirectory)/docker-compose/docker-compose -f docker-compose.yml up -d
+    displayName: 'Build and Start Selenium Services'
+
+  # Wait for Selenium services to be ready
+  - script: |
+      sleep 30s  # Adjust the wait time based on your setup
+    displayName: 'Wait for Selenium Services'
+
+  # Run tests using a custom Docker image with test runner
+  - script: |
+      # Assuming you have a command to run your tests within the Docker container
+      docker run --network container:seleniumHub your_test_image_name
+    displayName: 'Run Tests'
+
+  # Stop and clean up Selenium services
+  - script: |
+      $(Agent.ToolsDirectory)/docker-compose/docker-compose -f docker-compose.yml down
+    displayName: 'Stop Selenium Services'
