@@ -1,5 +1,5 @@
 trigger:
-- main  # Adjust the branch as needed
+- none  # Adjust the branch as needed
 
 jobs:
 - job: RunSeleniumTests
@@ -9,11 +9,11 @@ jobs:
   steps:
   - checkout: self
 
-  # Install Docker Compose
+  # Install Docker Compose 1.25
   - task: UseDotNet@2
     inputs:
       packageType: 'docker-compose'
-      version: '1.x'
+      version: '1.25'
       installationPath: $(Agent.ToolsDirectory)/docker-compose
 
   # Build and start Selenium services
